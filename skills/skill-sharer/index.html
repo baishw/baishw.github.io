@@ -1,123 +1,62 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<!-- WeChat / OG 分享标签 -->
-<meta property="og:title" content="skill-sharer · BingoClaw 技能分享" />
-<meta property="og:description" content="将 BingoClaw 技能发布到 baishw.github.io 网站，自动生成精美分享页面并返回对应的访问链接。" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://baishw.github.io/skills/skill-sharer/" />
-<meta property="og:image" content="https://baishw.github.io/icon.png" />
-<meta name="description" content="将 BingoClaw 技能发布到 baishw.github.io 网站，自动生成精美分享页面并返回对应的访问链接。" />
-<meta name="wechat_title" content="skill-sharer · BingoClaw 技能分享" />
-<meta name="wechat_desc" content="将 BingoClaw 技能发布到 baishw.github.io 网站，自动生成精美分享页面并返回对应的访问链接。" />
-
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>skill-sharer · BingoClaw 技能分享</title>
+<meta name="description" content="将 OpenClaw 技能发布到 baishw.github.io 网站，自动生成分享页与下载页面">
+<meta property="og:title" content="skill-sharer · BingoClaw 技能分享">
+<meta property="og:description" content="将 OpenClaw 技能发布到 baishw.github.io 网站，自动生成分享页与下载页面">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://baishw.github.io/skills/skill-sharer/">
+<meta property="og:image" content="https://baishw.github.io/icon.png">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    color: #e0e0e0; min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center;
-  }
-  .container { max-width: 480px; width: 100%; padding: 24px 20px; }
-  .card {
-    background: rgba(255,255,255,0.06); backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
-    padding: 32px 24px; text-align: center; margin-bottom: 20px;
-  }
-  .card .icon { font-size: 64px; margin-bottom: 12px; }
-  .card h1 {
-    font-size: 22px; font-weight: 600;
-    background: linear-gradient(90deg, #64b5f6, #42a5f5);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    margin-bottom: 8px;
-  }
-  .card .tag {
-    display: inline-block; background: rgba(66,165,245,0.15); color: #64b5f6;
-    padding: 3px 12px; border-radius: 20px; font-size: 12px; margin: 4px 4px;
-  }
-  .card .desc {
-    font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.7;
-    margin: 16px 0; text-align: left;
-  }
-  .card .meta { font-size: 12px; color: rgba(255,255,255,0.3); margin: 12px 0; line-height: 1.8; }
-  .card .meta span { display: inline-block; margin-right: 12px; }
-.share-tips {
-    background: rgba(255,255,255,0.04); border-radius: 12px; padding: 16px;
-    font-size: 12px; color: rgba(255,255,255,0.35); line-height: 1.8; margin-top: 16px;
-  }
-  .btn-copy {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 14px 32px; background: linear-gradient(135deg, #1565c0, #1976d2);
-    color: #fff; border: none; border-radius: 14px;
-    font-size: 16px; font-weight: 600; text-decoration: none; cursor: pointer;
-    margin: 8px 0; transition: transform 0.1s, opacity 0.2s;
-  }
-  .btn-copy:hover { opacity: 0.9; }
-  .btn-copy:active { transform: scale(0.97); }
-  .toast {
-    position: fixed; top: 10%; left: 50%;
-    transform: translate(-50%,-50%) scale(0.8);
-    background: rgba(0,0,0,0.75); color: #fff; padding: 10px 24px;
-    border-radius: 10px; font-size: 15px; font-weight: 500;
-    opacity: 0; transition: all 0.25s ease;
-    z-index: 999; pointer-events: none;
-  }
-  .footer { font-size: 11px; color: rgba(255,255,255,0.2); padding: 20px; text-align: center; }
-  @media (max-width: 480px) { .container { padding: 16px; } .card { padding: 24px 18px; } }
-</style>
-</head>
-<body>
-<div class="container">
-  <div class="card">
-    <div class="icon">📦</div>
-    <h1>skill-sharer</h1>
-    <div>
-      <span class="tag">v2.0</span>
-      <span class="tag">12.9KB</span>
-    </div>
-    <div class="desc">将 BingoClaw 技能发布到 baishw.github.io 网站，自动生成精美分享页面并返回对应的访问链接。</div>
-    <div class="meta">
-      <span>👤 微信小文</span>
-      <span>📅 2026-05-23</span>
-    </div>
-    <div style="margin:12px 0">
-      <button class="btn-copy" onclick="copylink()">📋 复制下载链接</button>
-    </div>
-    <div style="font-size:12px;color:rgba(255,255,255,0.25);word-break:break-all;margin-bottom:4px">https://baishw.github.io/skills/skill-sharer/skill-sharer.skill</div>
-    <div class="share-tips">
-      💡 <b>安装说明</b><br>
-      1. 复制下载链接到浏览器打开<br>
-      2. 下载 .skill 文件到服务器<br>
-      3. 解压到 skills/ 目录<br>
-      4. 复制配置文件并填入密钥<br>
-      5. 启动技能即可使用
-    </div>
-  </div>  <div id="toast" class="toast">✅ 已复制</div>
-  <div class="footer">🌙 微信小文 · 技能分享平台<br>Powered by BingoClaw</div>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);color:#e0e0e0;min-height:100vh;display:flex;align-items:center;justify-content:center}
+  .card{max-width:460px;width:100%;margin:24px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+    border-radius:20px;padding:32px 24px;text-align:center}
+  .logo{font-size:56px;margin-bottom:8px}
+  .name{font-size:28px;font-weight:700;background:linear-gradient(90deg,#64b5f6,#42a5f5);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+  .tags{display:flex;gap:8px;justify-content:center;margin:8px 0 16px;flex-wrap:wrap}
+  .tag{font-size:12px;background:rgba(66,165,245,0.15);color:#64b5f6;padding:4px 12px;border-radius:12px}
+  .desc{font-size:14px;color:rgba(255,255,255,0.65);line-height:1.8;margin:0 0 20px;text-align:left}
+  .meta{font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:20px}
+  .copy-btn{display:inline-block;background:linear-gradient(90deg,#42a5f5,#64b5f6);color:#fff;border:none;border-radius:12px;
+    padding:12px 28px;font-size:15px;font-weight:600;cursor:pointer;transition:0.2s;margin-bottom:8px}
+  .copy-btn:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(66,165,245,0.3)}
+  .url-display{font-size:12px;color:rgba(255,255,255,0.25);word-break:break-all;margin-bottom:20px}
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#43a047;color:#fff;
+    padding:10px 24px;border-radius:10px;font-size:14px;opacity:0;transition:0.3s}
+  .install{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;
+    padding:20px;text-align:left;font-size:13px;color:rgba(255,255,255,0.4);line-height:2}
+  .install strong{color:rgba(255,255,255,0.6)}
+  .footer{font-size:11px;color:rgba(255,255,255,0.12);margin-top:24px}
+</style></head><body>
+<div class="card">
+  <div class="logo">🌙</div>
+  <div class="name">skill-sharer</div>
+  <div class="tags">
+    <span class="tag">v2.0</span>
+    <span class="tag">12.9KB</span>
+  </div>
+  <div class="desc">将 OpenClaw 技能发布到 baishw.github.io 网站，自动生成分享页与下载页面</div>
+  <div class="meta">👤 微信小文 &nbsp;📅 2026-05-23</div>
+  <button class="copy-btn" onclick="copyUrl()">📋 复制下载链接</button>
+  <div class="url-display" id="downloadUrl">https://baishw.github.io/skills/skill-sharer/skill-sharer.skill</div>
+  <div class="install">
+    <strong>💡 安装说明</strong><br>
+    1. 复制上方下载链接<br>
+    2. 在 OpenClaw 运行 <code>/skill install &lt;URL&gt;</code><br>
+    3. 将技能放入 <code>openclaw/skills/</code><br>
+    4. 重启 OpenClaw<br>
+    5. 开始使用
+  </div>
+  <div class="footer">🌙 微信小文 · BingoClaw 技能站</div>
 </div>
+<div class="toast" id="toast">✅ 已复制</div>
 <script>
-function copylink() {
-  var url = "https://baishw.github.io/skills/skill-sharer/skill-sharer.skill";
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(function() { showtoast(); });
-  } else {
-    var ta = document.createElement("textarea");
-    ta.value = url; ta.style.position = "fixed"; ta.style.left = "-9999px";
-    document.body.appendChild(ta); ta.select();
-    document.execCommand("copy"); document.body.removeChild(ta);
-    showtoast();
-  }
-}
-function showtoast() {
-  var t = document.getElementById("toast");
-  t.style.opacity = "1"; t.style.transform = "translate(-50%,-50%) scale(1)";
-  setTimeout(function() { t.style.opacity = "0"; t.style.transform = "translate(-50%,-50%) scale(0.8)"; }, 1500);
-}
+function copyUrl(){var u=document.getElementById('downloadUrl');navigator.clipboard.writeText(u.textContent).then(function(){
+  var t=document.getElementById('toast');t.style.opacity='1';setTimeout(function(){t.style.opacity='0'},1500)
+}).catch(function(){alert('复制失败，请手动复制')})}
 </script>
-</body>
-</html>
+</body></html>
