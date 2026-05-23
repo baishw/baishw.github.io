@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!-- WeChat / OG 分享标签 -->
+<meta property="og:title" content="skill-sharer · BingoClaw 技能分享" />
+<meta property="og:description" content="技能分享平台 + github同步" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://192.168.31.239:9090/share/skill-sharer" />
+<meta property="og:image" content="http://192.168.31.239:9090/static/icon.png" />
+<meta name="description" content="技能分享平台 + github同步" />
+<meta name="wechat_title" content="skill-sharer · BingoClaw 技能分享" />
+<meta name="wechat_desc" content="技能分享平台 + github同步" />
+
+<title>skill-sharer · BingoClaw 技能分享</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #e0e0e0; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .container { max-width: 480px; width: 100%; padding: 24px 20px; }
+  .card {
+    background: rgba(255,255,255,0.06); backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+    padding: 32px 24px; text-align: center; margin-bottom: 20px;
+  }
+  .card .icon { font-size: 64px; margin-bottom: 12px; }
+  .card h1 {
+    font-size: 22px; font-weight: 600;
+    background: linear-gradient(90deg, #64b5f6, #42a5f5);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .card .tag {
+    display: inline-block; background: rgba(66,165,245,0.15); color: #64b5f6;
+    padding: 3px 12px; border-radius: 20px; font-size: 12px; margin: 4px 4px;
+  }
+  .card .desc {
+    font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.7;
+    margin: 16px 0; text-align: left;
+  }
+  .card .meta { font-size: 12px; color: rgba(255,255,255,0.3); margin: 12px 0; line-height: 1.8; }
+  .card .meta span { display: inline-block; margin-right: 12px; }
+  .btn-download {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 32px; background: linear-gradient(135deg, #1565c0, #1976d2);
+    color: #fff; border: none; border-radius: 14px;
+    font-size: 16px; font-weight: 600; text-decoration: none; cursor: pointer;
+    margin: 8px 0; transition: transform 0.1s, opacity 0.2s;
+  }
+  .btn-download:hover { opacity: 0.9; }
+  .btn-download:active { transform: scale(0.97); }
+  .file-list { text-align: left; margin: 16px 0; }
+  .file-list .file-item {
+    padding: 6px 10px; font-size: 12px; color: rgba(255,255,255,0.4);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .file-list .file-item:before { content: "📄"; font-size: 14px; }
+  .share-tips {
+    background: rgba(255,255,255,0.04); border-radius: 12px; padding: 16px;
+    font-size: 12px; color: rgba(255,255,255,0.35); line-height: 1.8; margin-top: 16px;
+  }
+  .footer { font-size: 11px; color: rgba(255,255,255,0.2); padding: 20px; text-align: center; }
+  @media (max-width: 480px) { .container { padding: 16px; } .card { padding: 24px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="icon">📦</div>
+    <h1>skill-sharer</h1>
+    <div>
+      <span class="tag">v2.0</span>
+      <span class="tag">10.8KB</span>
+      <span class="tag">4 files</span>
+    </div>
+    <div class="desc">技能分享平台 + github同步</div>
+    <div class="meta">
+      <span>👤 xiaowen</span>
+      <span>📅 2026-05-23</span>
+    </div>
+    <a class="btn-download" href="http://192.168.31.239:9090/download/skill-sharer.skill" download="skill-sharer.skill">⬇ 下载技能包</a>
+    <div class="file-list"><div class="file-item">SKILL.md</div><div class="file-item">scripts/share_server.py</div><div class="file-item">scripts/skill_publish.py</div><div class="file-item">config.example.json</div></div>
+    <div class="share-tips">
+      💡 <b>安装说明</b><br>
+      1. 下载 .skill 文件到服务器<br>
+      2. 解压到 skills/ 目录<br>
+      3. 复制配置文件并填入密钥<br>
+      4. 启动技能即可使用
+    </div>
+  </div>
+  <div class="footer">🌙 微信小文 · 技能分享平台<br>Powered by BingoClaw</div>
+</div>
+</body></html>
