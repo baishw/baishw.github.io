@@ -46,18 +46,26 @@
   }
   .card .meta { font-size: 12px; color: rgba(255,255,255,0.3); margin: 12px 0; line-height: 1.8; }
   .card .meta span { display: inline-block; margin-right: 12px; }
-  .btn-download {
+.share-tips {
+    background: rgba(255,255,255,0.04); border-radius: 12px; padding: 16px;
+    font-size: 12px; color: rgba(255,255,255,0.35); line-height: 1.8; margin-top: 16px;
+  }
+  .btn-copy {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 14px 32px; background: linear-gradient(135deg, #1565c0, #1976d2);
     color: #fff; border: none; border-radius: 14px;
     font-size: 16px; font-weight: 600; text-decoration: none; cursor: pointer;
     margin: 8px 0; transition: transform 0.1s, opacity 0.2s;
   }
-  .btn-download:hover { opacity: 0.9; }
-  .btn-download:active { transform: scale(0.97); }
-  .share-tips {
-    background: rgba(255,255,255,0.04); border-radius: 12px; padding: 16px;
-    font-size: 12px; color: rgba(255,255,255,0.35); line-height: 1.8; margin-top: 16px;
+  .btn-copy:hover { opacity: 0.9; }
+  .btn-copy:active { transform: scale(0.97); }
+  .toast {
+    position: fixed; top: 10%; left: 50%;
+    transform: translate(-50%,-50%) scale(0.8);
+    background: rgba(0,0,0,0.75); color: #fff; padding: 10px 24px;
+    border-radius: 10px; font-size: 15px; font-weight: 500;
+    opacity: 0; transition: all 0.25s ease;
+    z-index: 999; pointer-events: none;
   }
   .footer { font-size: 11px; color: rgba(255,255,255,0.2); padding: 20px; text-align: center; }
   @media (max-width: 480px) { .container { padding: 16px; } .card { padding: 24px 18px; } }
@@ -77,15 +85,39 @@
       <span>👤 xiaowen</span>
       <span>📅 2026-05-23</span>
     </div>
-    <a class="btn-download" href="https://baishw.github.io/skills/voice-control-openclaw/voice-control-openclaw.skill" download="voice-control-openclaw.skill">⬇ 下载技能包</a>
+    <div style="margin:12px 0">
+      <button class="btn-copy" onclick="copylink()">📋 复制下载链接</button>
+    </div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.25);word-break:break-all;margin-bottom:4px">https://baishw.github.io/skills/voice-control-openclaw/voice-control-openclaw.skill</div>
     <div class="share-tips">
       💡 <b>安装说明</b><br>
-      1. 下载 .skill 文件到服务器<br>
-      2. 解压到 skills/ 目录<br>
-      3. 复制配置文件并填入密钥<br>
-      4. 启动技能即可使用
+      1. 复制下载链接到浏览器打开<br>
+      2. 下载 .skill 文件到服务器<br>
+      3. 解压到 skills/ 目录<br>
+      4. 复制配置文件并填入密钥<br>
+      5. 启动技能即可使用
     </div>
-  </div>
+  </div>  <div id="toast" class="toast">✅ 已复制</div>
   <div class="footer">🌙 微信小文 · 技能分享平台<br>Powered by BingoClaw</div>
 </div>
-</body></html>
+<script>
+function copylink() {
+  var url = "https://baishw.github.io/skills/voice-control-openclaw/voice-control-openclaw.skill";
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(function() { showtoast(); });
+  } else {
+    var ta = document.createElement("textarea");
+    ta.value = url; ta.style.position = "fixed"; ta.style.left = "-9999px";
+    document.body.appendChild(ta); ta.select();
+    document.execCommand("copy"); document.body.removeChild(ta);
+    showtoast();
+  }
+}
+function showtoast() {
+  var t = document.getElementById("toast");
+  t.style.opacity = "1"; t.style.transform = "translate(-50%,-50%) scale(1)";
+  setTimeout(function() { t.style.opacity = "0"; t.style.transform = "translate(-50%,-50%) scale(0.8)"; }, 1500);
+}
+</script>
+</body>
+</html>
