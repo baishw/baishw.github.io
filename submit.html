@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>发布技能 · BingoClaw 技能站</title>
+<meta name="description" content="发布您的 BingoClaw 技能，一键生成分享链接">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);color:#e0e0e0;min-height:100vh}
+  .wrap{max-width:480px;margin:0 auto;padding:24px 16px}
+  .header{text-align:center;margin-bottom:32px;padding-top:20px}
+  .header .logo{font-size:48px;margin-bottom:8px}
+  .header h1{font-size:22px;font-weight:600;
+    background:linear-gradient(90deg,#64b5f6,#42a5f5);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .header p{font-size:13px;color:rgba(255,255,255,0.4);margin-top:4px}
+  .form-group{margin-bottom:20px}
+  .form-group label{display:block;font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:8px}
+  .form-group input, .form-group textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px;padding:14px 16px;font-size:15px;color:#e0e0e0;font-family:inherit;transition:0.2s}
+  .form-group input:focus, .form-group textarea:focus{outline:none;border-color:#42a5f5;background:rgba(255,255,255,0.08)}
+  .form-group textarea{min-height:100px;resize:none}
+  .form-group .hint{font-size:12px;color:rgba(255,255,255,0.3);margin-top:6px}
+  .submit-btn{width:100%;background:linear-gradient(90deg,#42a5f5,#64b5f6);color:#fff;border:none;border-radius:14px;
+    padding:16px;font-size:16px;font-weight:600;cursor:pointer;transition:0.2s;margin-top:8px}
+  .submit-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(66,165,245,0.3)}
+  .submit-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+  .success-card{display:none;background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.2);border-radius:14px;
+    padding:20px;margin-top:20px;text-align:center}
+  .success-card.show{display:block}
+  .success-card .icon{font-size:40px;margin-bottom:12px}
+  .success-card h3{font-size:18px;color:#4caf50;margin-bottom:8px}
+  .success-card .share-url{font-size:13px;color:rgba(255,255,255,0.7);word-break:break-all;padding:12px;
+    background:rgba(255,255,255,0.05);border-radius:8px;margin:12px 0}
+  .copy-link-btn{display:inline-block;background:rgba(255,255,255,0.1);color:#64b5f6;border:none;border-radius:10px;
+    padding:10px 24px;font-size:14px;cursor:pointer;transition:0.2s;margin-top:8px}
+  .copy-link-btn:hover{background:rgba(255,255,255,0.15)}
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#43a047;color:#fff;
+    padding:12px 24px;border-radius:10px;font-size:14px;opacity:0;transition:0.3s;z-index:100}
+  .toast.show{opacity:1}
+  .footer{text-align:center;padding:32px 0;font-size:12px;color:rgba(255,255,255,0.2)}
+  .back-link{display:inline-block;margin-bottom:20px;color:#64b5f6;font-size:14px;text-decoration:none}
+</style></head><body>
+<div class="wrap">
+  <a href="index.html" class="back-link">← 返回首页</a>
+  <div class="header">
+    <div class="logo">✨</div>
+    <h1>发布技能</h1>
+    <p>一句话发布您的 BingoClaw 技能</p>
+  </div>
+  
+  <form id="skillForm">
+    <div class="form-group">
+      <label>技能名称 *</label>
+      <input type="text" id="skillName" placeholder="请输入技能名称" required>
+      <div class="hint">用于识别您的技能，建议使用英文名称</div>
+    </div>
+    
+    <div class="form-group">
+      <label>技能描述 *</label>
+      <textarea id="skillDesc" placeholder="一句话描述您的技能..." required></textarea>
+      <div class="hint">简洁描述技能功能，便于他人了解</div>
+    </div>
+    
+    <div class="form-group">
+      <label>技能作者</label>
+      <input type="text" id="skillAuthor" placeholder="您的昵称（可选）">
+    </div>
+    
+    <div class="form-group">
+      <label>技能版本</label>
+      <input type="text" id="skillVersion" placeholder="如 v1.0（可选）" value="v1.0">
+    </div>
+    
+    <button type="submit" class="submit-btn">🚀 发布技能</button>
+  </form>
+  
+  <div class="success-card" id="successCard">
+    <div class="icon">🎉</div>
+    <h3>发布成功！</h3>
+    <p style="color:rgba(255,255,255,0.6);font-size:14px">您的技能已发布，可以开始分享啦~</p>
+    <div class="share-url" id="shareUrl"></div>
+    <button class="copy-link-btn" onclick="copyShareUrl()">📋 复制分享链接</button>
+  </div>
+  
+  <div class="footer">🌙 微信小文 · BingoClaw 技能站</div>
+</div>
+<div class="toast" id="toast">✅ 已复制</div>
+
+<script>
+function generateId() {
+  return 'skill_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
+
+async function saveSkill(data) {
+  try {
+    const response = await fetch('skills.json');
+    let skills = [];
+    if (response.ok) {
+      skills = await response.json();
+    }
+    skills.push(data);
+    localStorage.setItem('bingoclaw_skills', JSON.stringify(skills));
+    return true;
+  } catch {
+    const skills = JSON.parse(localStorage.getItem('bingoclaw_skills') || '[]');
+    skills.push(data);
+    localStorage.setItem('bingoclaw_skills', JSON.stringify(skills));
+    return true;
+  }
+}
+
+document.getElementById('skillForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = e.target.querySelector('.submit-btn');
+  btn.disabled = true;
+  btn.textContent = '发布中...';
+  
+  const skillData = {
+    id: generateId(),
+    name: document.getElementById('skillName').value.trim(),
+    desc: document.getElementById('skillDesc').value.trim(),
+    author: document.getElementById('skillAuthor').value.trim() || '匿名用户',
+    version: document.getElementById('skillVersion').value.trim() || 'v1.0',
+    createdAt: new Date().toISOString().split('T')[0],
+    downloads: 0
+  };
+  
+  await saveSkill(skillData);
+  
+  btn.disabled = false;
+  btn.textContent = '🚀 发布技能';
+  
+  const shareUrl = window.location.origin + window.location.pathname.replace('submit.html', 'skill.html?id=' + skillData.id);
+  document.getElementById('shareUrl').textContent = shareUrl;
+  document.getElementById('successCard').classList.add('show');
+  document.getElementById('skillForm').style.display = 'none';
+});
+
+function copyShareUrl() {
+  const url = document.getElementById('shareUrl').textContent;
+  navigator.clipboard.writeText(url).then(() => {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 1500);
+  }).catch(() => {
+    alert('复制失败，请手动复制');
+  });
+}
+</script>
+</body></html>

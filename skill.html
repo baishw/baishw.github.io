@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BingoClaw 技能分享</title>
+<meta name="description" content="BingoClaw AI 技能分享平台">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://baishw.github.io/icon.png">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);color:#e0e0e0;min-height:100vh;display:flex;align-items:center;justify-content:center}
+  .card{max-width:460px;width:100%;margin:24px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+    border-radius:20px;padding:32px 24px;text-align:center}
+  .logo{font-size:56px;margin-bottom:8px}
+  .name{font-size:28px;font-weight:700;background:linear-gradient(90deg,#64b5f6,#42a5f5);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+  .tags{display:flex;gap:8px;justify-content:center;margin:8px 0 16px;flex-wrap:wrap}
+  .tag{font-size:12px;background:rgba(66,165,245,0.15);color:#64b5f6;padding:4px 12px;border-radius:12px}
+  .desc{font-size:14px;color:rgba(255,255,255,0.65);line-height:1.8;margin:0 0 20px;text-align:left}
+  .meta{font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:20px}
+  .copy-btn{display:inline-block;background:linear-gradient(90deg,#42a5f5,#64b5f6);color:#fff;border:none;border-radius:12px;
+    padding:12px 28px;font-size:15px;font-weight:600;cursor:pointer;transition:0.2s;margin-bottom:8px}
+  .copy-btn:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(66,165,245,0.3)}
+  .url-display{font-size:12px;color:rgba(255,255,255,0.25);word-break:break-all;margin-bottom:20px}
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#43a047;color:#fff;
+    padding:10px 24px;border-radius:10px;font-size:14px;opacity:0;transition:0.3s}
+  .install{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;
+    padding:20px;text-align:left;font-size:13px;color:rgba(255,255,255,0.4);line-height:2}
+  .install strong{color:rgba(255,255,255,0.6)}
+  .footer{font-size:11px;color:rgba(255,255,255,0.12);margin-top:24px}
+  .not-found{text-align:center;color:rgba(255,255,255,0.5)}
+  .not-found .icon{font-size:64px;margin-bottom:16px}
+  .not-found h2{font-size:20px;margin-bottom:8px}
+  .not-found p{font-size:14px;margin-bottom:20px}
+  .back-btn{display:inline-block;color:#64b5f6;text-decoration:none;font-size:14px}
+  .back-btn:hover{text-decoration:underline}
+</style></head><body>
+<div class="card" id="skillCard">
+  <div class="not-found" id="notFound">
+    <div class="icon">🔍</div>
+    <h2>技能未找到</h2>
+    <p>该技能可能已被删除或不存在</p>
+    <a href="index.html" class="back-btn">← 返回首页</a>
+  </div>
+  
+  <div id="skillContent" style="display:none">
+    <div class="logo">✨</div>
+    <div class="name" id="skillName"></div>
+    <div class="tags" id="skillTags"></div>
+    <div class="desc" id="skillDesc"></div>
+    <div class="meta" id="skillMeta"></div>
+    <button class="copy-btn" onclick="copyUrl()">📋 复制分享链接</button>
+    <div class="url-display" id="downloadUrl"></div>
+    <div class="install">
+      <strong>💡 使用说明</strong><br>
+      1. 复制上方分享链接<br>
+      2. 在 BingoClaw 中粘贴链接即可查看<br>
+      3. 或分享给好友一起使用
+    </div>
+    <div class="footer">🌙 微信小文 · BingoClaw 技能站</div>
+  </div>
+</div>
+<div class="toast" id="toast">✅ 已复制</div>
+
+<script>
+function getSkillById(skillId) {
+  const skills = JSON.parse(localStorage.getItem('bingoclaw_skills') || '[]');
+  return skills.find(s => s.id === skillId);
+}
+
+function loadSkill() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const skillId = urlParams.get('id');
+  
+  if (!skillId) {
+    document.getElementById('notFound').style.display = 'block';
+    return;
+  }
+  
+  const skill = getSkillById(skillId);
+  
+  if (!skill) {
+    document.getElementById('notFound').style.display = 'block';
+    return;
+  }
+  
+  document.getElementById('notFound').style.display = 'none';
+  document.getElementById('skillContent').style.display = 'block';
+  
+  document.getElementById('skillName').textContent = skill.name;
+  document.getElementById('skillDesc').textContent = skill.desc;
+  document.getElementById('skillMeta').textContent = `👤 ${skill.author} · 📅 ${skill.createdAt}`;
+  document.getElementById('skillTags').innerHTML = `<span class="tag">${skill.version}</span>`;
+  
+  const shareUrl = window.location.href;
+  document.getElementById('downloadUrl').textContent = shareUrl;
+  
+  document.title = `${skill.name} · BingoClaw 技能分享`;
+}
+
+function copyUrl() {
+  const u = document.getElementById('downloadUrl');
+  navigator.clipboard.writeText(u.textContent).then(function() {
+    var t = document.getElementById('toast');
+    t.style.opacity = '1';
+    setTimeout(function() { t.style.opacity = '0'; }, 1500);
+  }).catch(function() {
+    alert('复制失败，请手动复制');
+  });
+}
+
+loadSkill();
+</script>
+</body></html>

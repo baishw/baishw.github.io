@@ -1,64 +1,838 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>微信小文 · BingoClaw 技能站</title>
-<meta name="description" content="BingoClaw AI 技能分享平台。">
-<meta property="og:title" content="微信小文 · 技能站">
-<meta property="og:description" content="AI 技能包分享平台。">
-<meta property="og:type" content="website">
-<style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
-    background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);color:#e0e0e0;min-height:100vh}
-  .wrap{max-width:520px;margin:0 auto;padding:32px 20px}
-  .header{text-align:center;margin-bottom:28px}
-  .header .logo{font-size:48px;margin-bottom:8px}
-  .header h1{font-size:22px;font-weight:600;
-    background:linear-gradient(90deg,#64b5f6,#42a5f5);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-  .header p{font-size:13px;color:rgba(255,255,255,0.3);margin-top:4px}
-  .card{display:block;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);
-    border-radius:16px;padding:20px;margin-bottom:12px;text-decoration:none;transition:0.2s}
-  .card:hover{background:rgba(255,255,255,0.1);transform:translateY(-2px)}
-  .card h2{font-size:16px;color:#64b5f6;margin-bottom:6px}
-  .card .desc{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:8px}
-  .card .meta{display:flex;gap:8px;flex-wrap:wrap}
-  .card .tag{font-size:11px;background:rgba(66,165,245,0.15);color:#64b5f6;padding:2px 10px;border-radius:10px}
-  .footer{text-align:center;padding:20px;font-size:11px;color:rgba(255,255,255,0.15);line-height:1.8}
-</style></head><body>
-<div class="wrap">
-  <div class="header"><div class="logo">🌙</div><h1>微信小文 · 技能站</h1><p>分享技能，随时随地</p></div>
-  <div class="skills">
-    <a href="skills/bingoclaw-helper/" class="card">
-      <div class="card-body">
-        <h2>bingoclaw-helper</h2>
-        <p class="desc">BingoClaw新用户助手，介绍平台功能与技能创建打包</p>
-        <div class="meta">
-          <span class="tag">v1.0</span>
-          <span class="tag">6.2KB</span>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BingoClaw - 技能分享平台</title>
+  <meta name="description" content="BingoClaw 智能技能分享平台，一句话发布技能，轻松分享给好友">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #16213e 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .star {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle 3s infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 10px 20px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+    }
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(102, 126, 234, 0.4);
+      color: #fff;
+    }
+    .nav-btn.active {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+      border-color: rgba(102, 126, 234, 0.5);
+      color: #fff;
+    }
+    
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 120px 20px 80px;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .logo-container {
+      margin-bottom: 24px;
+    }
+    .logo {
+      font-size: 80px;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .hero h1 {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .hero p {
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 500px;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+    
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 16px 40px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+      box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+    }
+    .cta-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
+    }
+    
+    .features {
+      position: relative;
+      z-index: 1;
+      padding: 60px 20px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 48px;
+      background: linear-gradient(90deg, #667eea, #f093fb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .features-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    
+    .feature-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 32px;
+      text-align: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    .feature-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(102, 126, 234, 0.3);
+    }
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .feature-card p {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    
+    .skills-section {
+      position: relative;
+      z-index: 1;
+      padding: 60px 20px;
+    }
+    
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 12px 20px;
+      margin-bottom: 16px;
+    }
+    .search-icon {
+      margin-right: 12px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+    .search-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+    }
+    .search-box input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+    .clear-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: rgba(255, 255, 255, 0.5);
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .filter-tabs {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .filter-tab {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 8px 20px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .filter-tab:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .filter-tab.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-color: transparent;
+      color: #fff;
+    }
+    
+    .skills-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .more-btn-container {
+      text-align: center;
+      margin-top: 24px;
+    }
+    .more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 12px 28px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .more-btn:hover {
+      background: rgba(102, 126, 234, 0.2);
+      border-color: rgba(102, 126, 234, 0.4);
+      color: #fff;
+      transform: translateX(4px);
+    }
+    
+    .skill-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .skill-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(102, 126, 234, 0.3);
+      transform: translateX(8px);
+    }
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .skill-name {
+      font-size: 1.125rem;
+      color: #667eea;
+      font-weight: 600;
+    }
+    .skill-version {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .skill-desc {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.5;
+    }
+    .skill-meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+    .empty-state .icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+    .empty-state p {
+      font-size: 14px;
+    }
+    
+    .help {
+      position: relative;
+      z-index: 1;
+      padding: 60px 20px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .help-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .help-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+    .help-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(102, 126, 234, 0.3);
+    }
+    .help-card h3 {
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .help-card p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.6;
+    }
+    
+    .contact {
+      position: relative;
+      z-index: 1;
+      padding: 60px 20px;
+    }
+    .contact-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .contact-icon {
+      font-size: 28px;
+    }
+    .contact-item h4 {
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .contact-item p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .feedback-form {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .feedback-form h3 {
+      font-size: 1.125rem;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .feedback-form input,
+    .feedback-form textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 16px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    .feedback-form input:focus,
+    .feedback-form textarea:focus {
+      border-color: #667eea;
+    }
+    .feedback-form input::placeholder,
+    .feedback-form textarea::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+    .feedback-form textarea {
+      min-height: 100px;
+      resize: none;
+    }
+    .feedback-form .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .feedback-form .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    }
+    
+    .footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px 20px;
+      color: rgba(255, 255, 255, 0.2);
+      font-size: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero {
+        padding: 40px 20px 60px;
+      }
+      .logo {
+        font-size: 60px;
+      }
+      .features {
+        padding: 40px 20px;
+      }
+      .skills-section {
+        padding: 40px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  
+  <nav class="navbar">
+    <a href="#" class="nav-btn active" onclick="scrollToSection('hero')">
+      <span>🏠</span>
+      <span>首页</span>
+    </a>
+    <a href="#" class="nav-btn" onclick="scrollToSection('skills-section')">
+      <span>🔍</span>
+      <span>搜索技能</span>
+    </a>
+    <a href="#" class="nav-btn" onclick="scrollToSection('help')">
+      <span>❓</span>
+      <span>帮助</span>
+    </a>
+    <a href="#" class="nav-btn" onclick="scrollToSection('contact')">
+      <span>📧</span>
+      <span>联系我们</span>
+    </a>
+  </nav>
+  
+  <section class="hero" id="hero">
+    <div class="logo-container">
+      <span class="logo">🚀</span>
+    </div>
+    <h1>BingoClaw</h1>
+    <p>基于 OpenClaw 的智能技能分享平台<br>发现、分享、使用精彩技能</p>
+    <a href="#" class="cta-btn" onclick="scrollToSection('skills-section')">
+      <span>🔍 探索技能</span>
+    </a>
+  </section>
+  
+  <section class="features" id="features">
+    <h2 class="section-title">平台特色</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>智能发布</h3>
+        <p>在 BingoClaw 中直接发布技能，自动生成分享页面</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <h3>便捷分享</h3>
+        <p>生成的链接可直接分享到微信、朋友圈等社交平台</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>跨平台访问</h3>
+        <p>技能页面支持手机、平板、电脑等多种设备访问</p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="skills-section" id="skills-section">
+    <h2 class="section-title">技能搜索</h2>
+    <div class="search-container">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="搜索技能名称或描述..." onkeyup="searchSkills()">
+        <button class="clear-btn" id="clearBtn" onclick="clearSearch()" style="display:none;">✕</button>
+      </div>
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterSkills('all')">全部</button>
+        <button class="filter-tab" onclick="filterSkills('newest')">最新</button>
+        <button class="filter-tab" onclick="filterSkills('popular')">热门</button>
+      </div>
+    </div>
+    <div class="skills-container" id="skillsContainer">
+      <div class="skill-card">
+        <div class="skill-header">
+          <span class="skill-name">bingoclaw-helper</span>
+          <span class="skill-version">v1.0</span>
+        </div>
+        <p class="skill-desc">BingoClaw新用户助手，介绍平台功能与技能创建打包</p>
+        <div class="skill-meta">
+          <span>👤 小虾米</span>
+          <span>📅 2026-05-23</span>
+          <span>⬇️ 128</span>
         </div>
       </div>
-    </a>
-    <a href="skills/webchat/" class="card">
-      <div class="card-body">
-        <h2>webchat</h2>
-        <p class="desc">多用户Web聊天室，支持多人实时与AI对话</p>
-        <div class="meta">
-          <span class="tag">v1.0</span>
-          <span class="tag">14.3KB</span>
+      <div class="skill-card">
+        <div class="skill-header">
+          <span class="skill-name">webchat</span>
+          <span class="skill-version">v1.0</span>
+        </div>
+        <p class="skill-desc">多用户Web聊天室，支持多人实时与AI对话</p>
+        <div class="skill-meta">
+          <span>👤 微信小文</span>
+          <span>📅 2026-05-22</span>
+          <span>⬇️ 89</span>
         </div>
       </div>
-    </a>
-    <a href="skills/taobao-sales-rank/" class="card">
-      <div class="card-body">
-        <h2>taobao-sales-rank</h2>
-        <p class="desc">淘宝关键词销量排行榜，自动抓取商品数据生成Excel</p>
-        <div class="meta">
-          <span class="tag">v1.0</span>
-          <span class="tag">9.5KB</span>
+      <div class="skill-card">
+        <div class="skill-header">
+          <span class="skill-name">taobao-sales-rank</span>
+          <span class="skill-version">v1.0</span>
+        </div>
+        <p class="skill-desc">淘宝关键词销量排行榜，自动抓取商品数据生成Excel</p>
+        <div class="skill-meta">
+          <span>👤 微信小文</span>
+          <span>📅 2026-05-21</span>
+          <span>⬇️ 256</span>
         </div>
       </div>
-    </a>
-  </div>
-  <div class="footer">🌙 Powered by BingoClaw</div>
-</div></body></html>
+      <div class="skill-card">
+        <div class="skill-header">
+          <span class="skill-name">skill-sharer</span>
+          <span class="skill-version">v2.0</span>
+        </div>
+        <p class="skill-desc">将 OpenClaw 技能发布到网站，自动生成分享页</p>
+        <div class="skill-meta">
+          <span>👤 微信小文</span>
+          <span>📅 2026-05-20</span>
+          <span>⬇️ 64</span>
+        </div>
+      </div>
+    </div>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="icon">🔍</div>
+      <p>未找到匹配的技能</p>
+    </div>
+    <div class="more-btn-container">
+      <a href="skills.html" class="more-btn">
+        <span>查看更多</span>
+        <span>→</span>
+      </a>
+    </div>
+  </section>
+  
+  <section class="help" id="help">
+    <h2 class="section-title">帮助中心</h2>
+    <div class="help-container">
+      <div class="help-card">
+        <h3>� 如何发布技能？</h3>
+        <p>在 BingoClaw 应用中，使用 `/skill publish` 命令，按照提示输入技能名称和描述即可完成发布。</p>
+      </div>
+      <div class="help-card">
+        <h3>🔗 如何分享技能？</h3>
+        <p>发布技能后，系统会自动生成分享链接，复制链接即可分享到微信、朋友圈等社交平台。</p>
+      </div>
+      <div class="help-card">
+        <h3>💾 如何安装技能？</h3>
+        <p>在 BingoClaw 中使用 `/skill install <链接>` 命令，或直接点击分享链接即可安装技能。</p>
+      </div>
+      <div class="help-card">
+        <h3>❌ 如何删除技能？</h3>
+        <p>在 BingoClaw 中使用 `/skill delete <技能名称>` 命令即可删除已发布的技能。</p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="contact" id="contact">
+    <h2 class="section-title">联系我们</h2>
+    <div class="contact-container">
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="contact-icon">📧</span>
+          <div>
+            <h4>邮箱</h4>
+            <p>support@bingoclaw.com</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">💬</span>
+          <div>
+            <h4>微信群</h4>
+            <p>添加客服微信：BingoClaw_Chat</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🐙</span>
+          <div>
+            <h4>GitHub</h4>
+            <p>github.com/BingoClaw</p>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-form">
+        <h3>💡 意见反馈</h3>
+        <form id="feedbackForm">
+          <input type="text" placeholder="您的昵称" id="feedbackName">
+          <textarea placeholder="请输入您的意见或建议..." id="feedbackContent"></textarea>
+          <button type="submit" class="submit-btn">提交反馈</button>
+        </form>
+      </div>
+    </div>
+  </section>
+  
+  <footer class="footer">
+    <p>🌙 BingoClaw - 基于 OpenClaw 的智能技能分享平台</p>
+    <p style="margin-top: 8px; font-size: 10px;">© 2026 BingoClaw. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function createStars() {
+      const starsContainer = document.getElementById('stars');
+      const starCount = 100;
+      
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        star.style.width = Math.random() * 3 + 1 + 'px';
+        star.style.height = star.style.width;
+        starsContainer.appendChild(star);
+      }
+    }
+    
+    const allSkills = [
+      { name: 'bingoclaw-helper', version: 'v1.0', desc: 'BingoClaw新用户助手，介绍平台功能与技能创建打包', author: '小虾米', createdAt: '2026-05-23', downloads: 128 },
+      { name: 'webchat', version: 'v1.0', desc: '多用户Web聊天室，支持多人实时与AI对话', author: '微信小文', createdAt: '2026-05-22', downloads: 89 },
+      { name: 'taobao-sales-rank', version: 'v1.0', desc: '淘宝关键词销量排行榜，自动抓取商品数据生成Excel', author: '微信小文', createdAt: '2026-05-21', downloads: 256 },
+      { name: 'skill-sharer', version: 'v2.0', desc: '将 OpenClaw 技能发布到网站，自动生成分享页', author: '微信小文', createdAt: '2026-05-20', downloads: 64 }
+    ];
+    
+    let currentFilter = 'all';
+    
+    function renderSkills(skills) {
+      const container = document.getElementById('skillsContainer');
+      const emptyState = document.getElementById('emptyState');
+      
+      container.innerHTML = '';
+      
+      if (skills.length === 0) {
+        emptyState.style.display = 'block';
+        return;
+      }
+      
+      emptyState.style.display = 'none';
+      
+      skills.forEach(skill => {
+        const card = document.createElement('div');
+        card.className = 'skill-card';
+        card.innerHTML = `
+          <div class="skill-header">
+            <span class="skill-name">${skill.name}</span>
+            <span class="skill-version">${skill.version}</span>
+          </div>
+          <p class="skill-desc">${skill.desc}</p>
+          <div class="skill-meta">
+            <span>👤 ${skill.author}</span>
+            <span>📅 ${skill.createdAt}</span>
+            <span>⬇️ ${skill.downloads}</span>
+          </div>
+        `;
+        card.addEventListener('click', () => {
+          window.location.href = `skills/${skill.name}/`;
+        });
+        container.appendChild(card);
+      });
+    }
+    
+    function searchSkills() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const clearBtn = document.getElementById('clearBtn');
+      
+      clearBtn.style.display = query ? 'block' : 'none';
+      
+      let filtered = [...allSkills];
+      
+      if (currentFilter === 'newest') {
+        filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      } else if (currentFilter === 'popular') {
+        filtered.sort((a, b) => b.downloads - a.downloads);
+      }
+      
+      if (query) {
+        filtered = filtered.filter(skill => 
+          skill.name.toLowerCase().includes(query) || 
+          skill.desc.toLowerCase().includes(query) ||
+          skill.author.toLowerCase().includes(query)
+        );
+      }
+      
+      renderSkills(filtered);
+    }
+    
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('clearBtn').style.display = 'none';
+      searchSkills();
+    }
+    
+    function filterSkills(filter) {
+      currentFilter = filter;
+      
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      searchSkills();
+    }
+    
+    function scrollToSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    
+    document.getElementById('feedbackForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('feedbackName').value;
+      const content = document.getElementById('feedbackContent').value;
+      
+      if (!content.trim()) {
+        alert('请输入反馈内容');
+        return;
+      }
+      
+      alert('感谢您的反馈！我们会认真处理您的意见。');
+      document.getElementById('feedbackForm').reset();
+    });
+    
+    createStars();
+    renderSkills(allSkills);
+  </script>
+</body>
+</html>
