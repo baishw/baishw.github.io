@@ -724,14 +724,66 @@
       }
     }
     
-    const allSkills = [
-      { name: 'bingoclaw-helper', version: 'v1.0', desc: 'BingoClaw新用户助手，介绍平台功能与技能创建打包', author: '小虾米', createdAt: '2026-05-23', downloads: 128 },
-      { name: 'webchat', version: 'v1.0', desc: '多用户Web聊天室，支持多人实时与AI对话', author: '微信小文', createdAt: '2026-05-22', downloads: 89 },
-      { name: 'taobao-sales-rank', version: 'v1.0', desc: '淘宝关键词销量排行榜，自动抓取商品数据生成Excel', author: '微信小文', createdAt: '2026-05-21', downloads: 256 },
-      { name: 'skill-sharer', version: 'v2.0', desc: '将 OpenClaw 技能发布到网站，自动生成分享页', author: '微信小文', createdAt: '2026-05-20', downloads: 64 }
-    ];
-    
+    const API_BASE = 'https://skill.cxus.cn/api/skill';
+    let allSkills = [];
     let currentFilter = 'all';
+    
+    async function fetchLatestSkills() {
+      try {
+        const response = await fetch(`${API_BASE}/latest?limit=10`);
+        const result = await response.json();
+        if (result.code === 1 && result.data && result.data.list) {
+          return result.data.list;
+        }
+        return [];
+      } catch (error) {
+        console.error('获取最新技能失败:', error);
+        return [];
+      }
+    }
+    
+    async function fetchHotSkills() {
+      try {
+        const response = await fetch(`${API_BASE}/hot?limit=10`);
+        const result = await response.json();
+        if (result.code === 1 && result.data && result.data.list) {
+          return result.data.list;
+        }
+        return [];
+      } catch (error) {
+        console.error('获取热门技能失败:', error);
+        return [];
+      }
+    }
+    
+    function formatTime(timestamp) {
+      const date = new Date(timestamp * 1000);
+      return date.toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).replace(/\//g, '-');
+    }
+    
+    function getTypeIcon(type) {
+      const icons = {
+        'function': '⚡',
+        'api': '🔗',
+        'database': '💾',
+        'workflow': '🔄'
+      };
+      return icons[type] || '📦';
+    }
+    
+    function getRiskLevelClass(level) {
+      const classes = {
+        'low': 'risk-low',
+        'medium': 'risk-medium',
+        'high': 'risk-high',
+        'critical': 'risk-critical'
+      };
+      return classes[level] || 'risk-low';
+    }
     
     function renderSkills(skills) {
       const container = document.getElementById('skillsContainer');
@@ -751,46 +803,50 @@
         card.className = 'skill-card';
         card.innerHTML = `
           <div class="skill-header">
-            <span class="skill-name">${skill.name}</span>
+            <span class="skill-name">${getTypeIcon(skill.type)} ${skill.name}</span>
             <span class="skill-version">${skill.version}</span>
           </div>
-          <p class="skill-desc">${skill.desc}</p>
+          <p class="skill-desc">${skill.description || skill.summary || '暂无描述'}</p>
           <div class="skill-meta">
-            <span>👤 ${skill.author}</span>
-            <span>📅 ${skill.createdAt}</span>
-            <span>⬇️ ${skill.downloads}</span>
+            <span>👤 ${skill.username}</span>
+            <span>📅 ${formatTime(skill.createtime)}</span>
+            <span>⬇️ ${skill.installcount || 0}</span>
           </div>
         `;
         card.addEventListener('click', () => {
-          window.location.href = `skills/${skill.name}/`;
+          window.location.href = `skill.html?id=${skill.id}`;
         });
         container.appendChild(card);
       });
     }
     
-    function searchSkills() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
+    async function searchSkills() {
+      const query = document.getElementById('searchInput').value;
       const clearBtn = document.getElementById('clearBtn');
       
       clearBtn.style.display = query ? 'block' : 'none';
       
-      let filtered = [...allSkills];
-      
-      if (currentFilter === 'newest') {
-        filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      } else if (currentFilter === 'popular') {
-        filtered.sort((a, b) => b.downloads - a.downloads);
+      try {
+        let skills = [];
+        
+        if (currentFilter === 'newest') {
+          const response = await fetch(`${API_BASE}/latest?limit=10${query ? '&q=' + encodeURIComponent(query) : ''}`);
+          const result = await response.json();
+          skills = result.data?.list || [];
+        } else if (currentFilter === 'popular') {
+          const response = await fetch(`${API_BASE}/hot?limit=10${query ? '&q=' + encodeURIComponent(query) : ''}`);
+          const result = await response.json();
+          skills = result.data?.list || [];
+        } else {
+          const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}&limit=10`);
+          const result = await response.json();
+          skills = result.data?.list || [];
+        }
+        
+        renderSkills(skills);
+      } catch (error) {
+        console.error('搜索技能失败:', error);
       }
-      
-      if (query) {
-        filtered = filtered.filter(skill => 
-          skill.name.toLowerCase().includes(query) || 
-          skill.desc.toLowerCase().includes(query) ||
-          skill.author.toLowerCase().includes(query)
-        );
-      }
-      
-      renderSkills(filtered);
     }
     
     function clearSearch() {
@@ -831,8 +887,24 @@
       document.getElementById('feedbackForm').reset();
     });
     
-    createStars();
-    renderSkills(allSkills);
+    async function init() {
+      createStars();
+      
+      try {
+        const latestSkills = await fetchLatestSkills();
+        const hotSkills = await fetchHotSkills();
+        
+        allSkills = [...latestSkills, ...hotSkills].filter((skill, index, self) => 
+          index === self.findIndex(s => s.id === skill.id)
+        );
+        
+        renderSkills(latestSkills);
+      } catch (error) {
+        console.error('初始化失败:', error);
+      }
+    }
+    
+    init();
   </script>
 </body>
 </html>
