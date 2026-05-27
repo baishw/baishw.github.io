@@ -1,0 +1,31 @@
+{
+  "type": "function",
+  "version": "1.0.0",
+  "name": "test_skill",
+  "description": "测试技能 - 用于验证 PubSkill 发布流程",
+  "summary": "提供简单问候功能的测试技能",
+  "risk_level": "low",
+  "timeout": 30,
+  "method": "POST",
+  "auth_type": "none",
+  "params": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "用户名称"
+      }
+    },
+    "required": ["name"]
+  },
+  "returns": {
+    "type": "object",
+    "properties": {
+      "message": {
+        "type": "string",
+        "description": "问候消息"
+      }
+    }
+  },
+  "dependencies": []
+}
