@@ -88,12 +88,12 @@ class GitHubClient:
         except Exception:
             return None
     
-    def create_file(self, path: str, content: str, message: str) -> Dict:
-        """创建文件
+    def create_file(self, path: str, content: bytes, message: str) -> Dict:
+        """创建文件（支持二进制文件）
         
         Args:
             path: 文件路径
-            content: 文件内容
+            content: 文件内容（字节类型）
             message: 提交信息
             
         Returns:
@@ -101,18 +101,18 @@ class GitHubClient:
         """
         data = {
             'message': message,
-            'content': base64.b64encode(content.encode('utf-8')).decode('utf-8'),
+            'content': base64.b64encode(content).decode('utf-8'),
             'branch': self.branch
         }
         
         return self._request('PUT', f'/contents/{path}', data=data)
     
-    def update_file(self, path: str, content: str, sha: str, message: str) -> Dict:
-        """更新文件
+    def update_file(self, path: str, content: bytes, sha: str, message: str) -> Dict:
+        """更新文件（支持二进制文件）
         
         Args:
             path: 文件路径
-            content: 文件内容
+            content: 文件内容（字节类型）
             sha: 文件 SHA
             message: 提交信息
             
@@ -121,7 +121,7 @@ class GitHubClient:
         """
         data = {
             'message': message,
-            'content': base64.b64encode(content.encode('utf-8')).decode('utf-8'),
+            'content': base64.b64encode(content).decode('utf-8'),
             'sha': sha,
             'branch': self.branch
         }
@@ -162,8 +162,8 @@ class GitHubClient:
         if not source_path.exists():
             raise ValueError(f"文件不存在：{source_path}")
         
-        # 读取文件内容
-        with open(source_path, 'r', encoding='utf-8') as f:
+        # 读取文件内容（二进制模式，支持所有文件类型）
+        with open(source_path, 'rb') as f:
             content = f.read()
         
         # 检查文件是否已存在
