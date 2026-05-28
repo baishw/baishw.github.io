@@ -59,6 +59,20 @@
 
         .download-section {
             text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .download-section h3 {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .download-btn {
@@ -67,13 +81,12 @@
             gap: 12px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 16px 32px;
+            padding: 16px 24px;
             border-radius: 12px;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             transition: transform 0.3s, box-shadow 0.3s;
-            margin-bottom: 24px;
         }
 
         .download-btn:hover {
@@ -82,7 +95,15 @@
         }
 
         .download-btn .btn-icon {
-            font-size: 20px;
+            font-size: 18px;
+        }
+
+        .download-btn.skill-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .download-btn.skill-btn:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
         }
 
         .file-info {
@@ -228,6 +249,15 @@
             .info-grid {
                 grid-template-columns: 1fr;
             }
+
+            .download-buttons {
+                flex-direction: column;
+            }
+
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -242,18 +272,25 @@
             
             <div class="card-body">
                 <div class="download-section">
-                    <a href="bingoclaw-pubskill-skill-1.2.0.tar.gz" download class="download-btn">
-                        <span class="btn-icon">⬇️</span>
-                        <span>下载技能包</span>
-                    </a>
+                    <h3>选择下载格式</h3>
+                    <div class="download-buttons">
+                        <a href="skill-sharer.skill" download class="download-btn skill-btn">
+                            <span class="btn-icon">✨</span>
+                            <span>下载 .skill 包</span>
+                        </a>
+                        <a href="bingoclaw-pubskill-skill-1.2.0.tar.gz" download class="download-btn">
+                            <span class="btn-icon">📥</span>
+                            <span>下载 .tar.gz 包</span>
+                        </a>
+                    </div>
                 </div>
 
                 <div class="file-info">
                     <h3>📋 文件信息</h3>
                     <div class="info-grid">
                         <div class="info-item">
-                            <span class="info-label">文件名</span>
-                            <span class="info-value">bingoclaw-pubskill-skill-1.2.0.tar.gz</span>
+                            <span class="info-label">主文件</span>
+                            <span class="info-value">skill-sharer.skill</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">版本</span>
@@ -261,11 +298,11 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">类型</span>
-                            <span class="info-value">function</span>
+                            <span class="info-value">Zip archive data</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">大小</span>
-                            <span class="info-value">26.8 KB</span>
+                            <span class="info-label">格式</span>
+                            <span class="info-value">.skill</span>
                         </div>
                     </div>
                 </div>
@@ -273,24 +310,24 @@
                 <div class="copy-section">
                     <h3>🔗 下载链接</h3>
                     <div class="copy-box">
-                        <input type="text" id="download-url" readonly value="https://baishw.github.io/skills/bingoclaw-pubskill-skill-1.2.0/bingoclaw-pubskill-skill-1.2.0.tar.gz">
+                        <input type="text" id="download-url" readonly value="https://baishw.github.io/skills/bingoclaw-pubskill-skill-1.2.0/skill-sharer.skill">
                         <button class="copy-btn" onclick="copyUrl()">复制链接</button>
                     </div>
                 </div>
 
                 <div class="install-section">
                     <h3>💻 安装命令</h3>
-                    <pre># 下载技能包
-wget https://baishw.github.io/skills/bingoclaw-pubskill-skill-1.2.0/bingoclaw-pubskill-skill-1.2.0.tar.gz
+                    <pre># 下载技能包（推荐）
+wget https://baishw.github.io/skills/bingoclaw-pubskill-skill-1.2.0/skill-sharer.skill
 
-# 解压技能包
-tar -xzf bingoclaw-pubskill-skill-1.2.0.tar.gz
+# 解压技能包（Zip 格式）
+unzip skill-sharer.skill -d bingoclaw-pubskill-skill
 
 # 进入技能目录
-cd bingoclaw-pubskill-skill-1.2.0
+cd bingoclaw-pubskill-skill
 
 # 安装依赖
-pip install -r requirements.txt
+pip install requests pyyaml
 
 # 开始使用
 python scripts/main.py --help</pre>
