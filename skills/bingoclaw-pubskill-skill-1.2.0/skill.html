@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>技能详情 - SkillHub</title>
+    <title>技能分享 - SkillHub</title>
     <style>
         * {
             margin: 0;
@@ -99,7 +99,6 @@
             color: #333;
         }
 
-        /* 下载区域 */
         .download-section {
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             border-radius: 12px;
@@ -148,6 +147,11 @@
             background: white;
         }
 
+        .url-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
         .copy-btn, .download-btn {
             display: inline-flex;
             align-items: center;
@@ -192,6 +196,21 @@
             flex-wrap: wrap;
         }
 
+        .install-commands {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+
+        .install-commands code {
+            display: block;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
         .footer {
             text-align: center;
             padding: 24px;
@@ -217,6 +236,26 @@
 
         .toast.show {
             opacity: 1;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         @media (max-width: 480px) {
@@ -251,35 +290,35 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <div class="icon">⚡</div>
-                <h1>bingoclaw-pubskill-skill</h1>
-                <p>技能发布工具 - v1.2.0</p>
+                <div class="icon" id="skill-icon">⚡</div>
+                <h1 id="skill-name">技能分享</h1>
+                <p id="skill-subtitle">加载中...</p>
             </div>
             
             <div class="card-body">
-                <div class="section">
+                <div class="section" id="description-section">
                     <h2>📖 技能描述</h2>
-                    <p>发布技能到 SkillHub 系统，支持技能信息提取、API注册、包上传、分享链接生成等功能。</p>
+                    <p id="skill-description">-</p>
                 </div>
 
-                <div class="section">
+                <div class="section" id="info-section">
                     <h2>📋 技能信息</h2>
                     <div class="info-grid">
                         <div class="info-item">
                             <span class="info-label">类型</span>
-                            <span class="info-value">function</span>
+                            <span class="info-value" id="skill-type">-</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">版本</span>
-                            <span class="info-value">1.2.0</span>
+                            <span class="info-value" id="skill-version">-</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">格式</span>
-                            <span class="info-value">.skill</span>
+                            <span class="info-value" id="skill-format">.skill</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">状态</span>
-                            <span class="info-value">正常</span>
+                            <span class="info-label">提供者</span>
+                            <span class="info-value" id="skill-author">-</span>
                         </div>
                     </div>
                 </div>
@@ -288,36 +327,32 @@
                     <div class="download-header">
                         <span class="download-icon">💾</span>
                         <div class="download-info">
-                            <h3>技能安装包</h3>
-                            <p>skill-sharer.skill (Zip archive)</p>
+                            <h3 id="download-title">技能安装包</h3>
+                            <p id="download-filename">skill-package.skill</p>
                         </div>
                     </div>
 
                     <div class="url-box">
-                        <input type="text" id="download-url" readonly value="https://baishw.github.io/skills/bingoclaw-pubskill-skill-1.2.0/skill-sharer.skill">
+                        <input type="text" id="download-url" readonly value="">
                     </div>
 
                     <div class="action-buttons">
-                        <button class="copy-btn" onclick="copyDownloadUrl()">
+                        <button class="copy-btn" id="copy-btn" onclick="copyDownloadUrl()">
                             <span>📋</span>
                             <span>复制下载地址</span>
                         </button>
-                        <a href="skill-sharer.skill" download class="download-btn">
+                        <a href="#" id="download-btn" download class="download-btn">
                             <span>⬇️</span>
                             <span>下载技能包</span>
                         </a>
                     </div>
                 </div>
 
-                <div class="section">
+                <div class="section" id="install-section">
                     <h2>💻 安装命令</h2>
-                    <pre style="background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; font-size: 13px; overflow-x: auto;"># 下载技能包
-wget https://baishw.github.io/skills/bingoclaw-pubskill-skill-1.2.0/skill-sharer.skill
-
-# 解压安装
-unzip skill-sharer.skill -d bingoclaw-pubskill-skill
-cd bingoclaw-pubskill-skill
-pip install requests pyyaml</pre>
+                    <div class="install-commands" id="install-commands">
+                        <code id="install-code"># 下载并安装技能包</code>
+                    </div>
                 </div>
             </div>
         </div>
@@ -330,11 +365,103 @@ pip install requests pyyaml</pre>
     <div class="toast" id="toast">链接已复制到剪贴板！</div>
 
     <script>
+        const API_BASE_URL = 'https://skill.cxus.cn';
+        
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function getSkillIcon(type) {
+            const icons = {
+                'function': '🔧',
+                'api': '🌐',
+                'database': '🗄️',
+                'workflow': '⚙️',
+                'tool': '🛠️',
+                'default': '⚡'
+            };
+            return icons[type] || icons['default'];
+        }
+
+        function renderSkill(data) {
+            document.getElementById('skill-icon').textContent = getSkillIcon(data.type);
+            document.getElementById('skill-name').textContent = data.name || '未知技能';
+            document.getElementById('skill-subtitle').textContent = `${data.description || ''} - v${data.version || '1.0.0'}`;
+            document.getElementById('skill-description').textContent = data.description || '暂无描述';
+            document.getElementById('skill-type').textContent = data.type || 'function';
+            document.getElementById('skill-version').textContent = data.version || '1.0.0';
+            document.getElementById('skill-author').textContent = data.author || data.username || '-';
+
+            const downloadUrl = data.downloadUrl || data.url || '';
+            const filename = data.filename || `${data.name || 'skill'}.skill`;
+            
+            document.getElementById('download-title').textContent = data.packageTitle || '技能安装包';
+            document.getElementById('download-filename').textContent = filename;
+            document.getElementById('download-url').value = downloadUrl;
+            document.getElementById('download-btn').href = downloadUrl;
+            document.getElementById('download-btn').download = filename;
+
+            const installCmd = data.installCommand || `# 下载技能包\nwget ${downloadUrl}\n\n# 解压安装\nunzip ${filename} -d skill-package\ncd skill-package`;
+            document.getElementById('install-code').textContent = installCmd;
+
+            if (data.id) {
+                document.title = `${data.name} - 技能分享 - SkillHub`;
+            }
+        }
+
+        async function loadSkillInfo() {
+            const skillId = getUrlParam('id');
+            const name = getUrlParam('name');
+            const url = getUrlParam('url');
+            const version = getUrlParam('version');
+            const type = getUrlParam('type');
+            const desc = getUrlParam('desc');
+            const author = getUrlParam('author');
+
+            if (skillId) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/skill/detail?id=${skillId}`);
+                    const result = await response.json();
+                    
+                    if (result.code === 1 && result.data) {
+                        const skill = result.data;
+                        const baseUrl = window.location.origin + window.location.pathname.replace('skill.html', '');
+                        skill.downloadUrl = `${baseUrl}${skill.name || 'skill'}.skill`;
+                        skill.filename = `${skill.name || 'skill'}-${skill.version || '1.0.0'}.skill`;
+                        renderSkill(skill);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('加载技能信息失败:', error);
+                }
+            }
+
+            if (name) {
+                const skillData = {
+                    name: decodeURIComponent(name),
+                    version: version || '1.0.0',
+                    type: type || 'function',
+                    description: desc ? decodeURIComponent(desc) : '',
+                    author: author ? decodeURIComponent(author) : '',
+                    downloadUrl: url ? decodeURIComponent(url) : window.location.origin + window.location.pathname.replace('skill.html', '') + encodeURIComponent(name) + '.skill',
+                    filename: `${decodeURIComponent(name)}-${version || '1.0.0'}.skill`
+                };
+                renderSkill(skillData);
+            } else {
+                document.getElementById('skill-name').textContent = '技能分享页面';
+                document.getElementById('skill-subtitle').textContent = '请提供技能参数';
+                document.getElementById('skill-description').textContent = '使用 URL 参数提供技能信息，例如：skill.html?name=技能名称&url=下载链接&version=1.0.0';
+            }
+        }
+
         function copyDownloadUrl() {
             const url = document.getElementById('download-url').value;
+            if (!url) return;
+
             navigator.clipboard.writeText(url).then(() => {
                 const toast = document.getElementById('toast');
-                const btn = document.querySelector('.copy-btn');
+                const btn = document.getElementById('copy-btn');
                 
                 toast.classList.add('show');
                 btn.classList.add('copied');
@@ -354,10 +481,12 @@ pip install requests pyyaml</pre>
                 toast.classList.add('show');
                 
                 setTimeout(() => {
-                    toast.classList.remove('hidden');
+                    toast.classList.remove('show');
                 }, 2000);
             });
         }
+
+        document.addEventListener('DOMContentLoaded', loadSkillInfo);
     </script>
 </body>
 </html>
