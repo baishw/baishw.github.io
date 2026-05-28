@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技能展示页面 - SkillHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部导航 -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">SkillHub</span>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-link active">技能详情</a>
+                <a href="#search" class="nav-link">搜索技能</a>
+                <a href="#install" class="nav-link">安装指南</a>
+            </nav>
+        </header>
+
+        <!-- 加载状态 -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>正在加载技能信息...</p>
+        </div>
+
+        <!-- 错误提示 -->
+        <div id="error" class="error hidden">
+            <span class="error-icon">❌</span>
+            <p id="error-message">加载技能信息失败</p>
+            <button id="retry-btn" class="btn btn-secondary">重试</button>
+        </div>
+
+        <!-- 技能详情卡片 -->
+        <div id="skill-content" class="skill-content hidden">
+            <!-- 技能头部 -->
+            <div class="skill-header">
+                <div class="skill-icon">
+                    <span id="skill-icon">🔧</span>
+                </div>
+                <div class="skill-info">
+                    <h1 id="skill-name">技能名称</h1>
+                    <div class="skill-meta">
+                        <span class="badge badge-type" id="skill-type">function</span>
+                        <span class="badge badge-version" id="skill-version">v1.0.0</span>
+                        <span class="badge badge-risk" id="skill-risk">low</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 技能描述 -->
+            <div class="section">
+                <h2>📖 技能描述</h2>
+                <p id="skill-description">技能描述信息</p>
+            </div>
+
+            <!-- 技能提供者 -->
+            <div class="section">
+                <h2>👤 提供者</h2>
+                <p id="skill-provider">技能提供者信息</p>
+            </div>
+
+            <!-- 技能参数 -->
+            <div class="section">
+                <h2>⚙️ 输入参数</h2>
+                <div id="skill-params">
+                    <div class="param-card">
+                        <div class="param-name">参数名称</div>
+                        <div class="param-type">类型</div>
+                        <div class="param-desc">描述</div>
+                        <div class="param-required">必填</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 返回结果 -->
+            <div class="section">
+                <h2>📤 返回结果</h2>
+                <div id="skill-returns">
+                    <div class="param-card">
+                        <div class="param-name">返回字段</div>
+                        <div class="param-type">类型</div>
+                        <div class="param-desc">描述</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 技能操作 -->
+            <div class="section" id="install">
+                <h2>📦 安装指南</h2>
+                <div class="install-guide">
+                    <h3>安装方式</h3>
+                    <pre id="install-command">pip install skill-package-name</pre>
+                    <h3>使用示例</h3>
+                    <pre id="usage-example"># 使用示例代码
+result = skill_name(param1="value")
+print(result)</pre>
+                </div>
+            </div>
+
+            <!-- 技能信息 -->
+            <div class="section">
+                <h2>📋 技能信息</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">技能ID</span>
+                        <span class="info-value" id="skill-id">1</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">创建时间</span>
+                        <span class="info-value" id="skill-created">2024-01-01</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">更新时间</span>
+                        <span class="info-value" id="skill-updated">2024-01-01</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">状态</span>
+                        <span class="info-value" id="skill-status">normal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技能搜索区域 -->
+        <div id="search" class="section search-section">
+            <h2>🔍 搜索技能</h2>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="输入技能名称或关键字搜索...">
+                <button id="search-btn" class="btn btn-primary">搜索</button>
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>© 2026 SkillHub. All rights reserved.</p>
+            <p>技能管理平台</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
