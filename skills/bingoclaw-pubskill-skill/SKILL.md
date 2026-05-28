@@ -1,6 +1,6 @@
 ---
 name: bingoclaw-pubskill-skill
-version: 1.1.0
+version: 1.2.0
 description: "发布技能到 SkillHub 系统：提取目标技能信息，通过 API 注册到技能管理系统，上传技能包到 baishw.github.io，返回技能分享页 URL。Use when user wants to publish a skill to SkillHub platform, including skill information extraction, API registration, package upload, and sharing URL generation."
 homepage: https://gitee.com/baishw/bingoclaw-skills
 metadata:
