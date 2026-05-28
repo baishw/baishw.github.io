@@ -337,5 +337,37 @@ function init() {
     });
 }
 
+// 复制下载链接
+function copyDownloadUrl() {
+    const url = document.getElementById('download-url').value;
+    navigator.clipboard.writeText(url).then(() => {
+        // 显示 toast 提示
+        const toast = document.getElementById('toast');
+        const btn = document.querySelector('.copy-btn');
+        
+        toast.classList.add('show');
+        btn.classList.add('copied');
+        btn.innerHTML = '<span>✓</span><span>已复制</span>';
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            btn.classList.remove('copied');
+            btn.innerHTML = '<span>📋</span><span>复制链接</span>';
+        }, 2000);
+    }).catch(() => {
+        // 降级方案：手动选中并复制
+        const input = document.getElementById('download-url');
+        input.select();
+        document.execCommand('copy');
+        
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2000);
+    });
+}
+
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', init);
