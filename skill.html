@@ -365,9 +365,7 @@
         }
 
         function getBaseUrl() {
-            const pathParts = window.location.pathname.split('/');
-            pathParts.pop();
-            return window.location.origin + pathParts.join('/') + '/';
+            return window.location.origin + '/skills/';
         }
 
         function renderSkill(data) {
@@ -379,9 +377,12 @@
             document.getElementById('skill-version').textContent = data.version || '1.0.0';
             document.getElementById('skill-author').textContent = data.author || data.username || '-';
 
-            const downloadUrl = data.downloadUrl || data.url || '';
-            const filename = data.filename || `${data.name || 'skill'}.skill`;
             const baseUrl = getBaseUrl();
+            const skillName = data.name || 'skill';
+            const skillVersion = data.version || '1.0.0';
+            const filename = data.filename || `${skillName}-${skillVersion}.skill`;
+            
+            const downloadUrl = data.downloadUrl || data.url || `${baseUrl}${skillName}.skill`;
             
             document.getElementById('download-title').textContent = data.packageTitle || '技能安装包';
             document.getElementById('download-filename').textContent = filename;
