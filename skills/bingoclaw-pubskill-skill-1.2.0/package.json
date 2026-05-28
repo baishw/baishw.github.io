@@ -1,0 +1,27 @@
+{
+  "name": "bingoclaw-pubskill-skill",
+  "version": "1.2.0",
+  "type": "function",
+  "description": "技能发布工具 - 发布技能到 SkillHub 系统",
+  "created_at": "2026-05-28",
+  "author": "baishw",
+  "homepage": "https://gitee.com/baishw/bingoclaw-skills",
+  "api_url": "https://skill.cxus.cn",
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "SKILL.md",
+    "config/bingoclaw.json",
+    "scripts/main.py",
+    "scripts/api_client.py",
+    "scripts/extractor.py",
+    "scripts/validator.py",
+    "scripts/github_client.py",
+    "docs/README.md"
+  ],
+  "requires": {
+    "python": ">=3.6",
+    "packages": ["requests", "pyyaml"]
+  }
+}
