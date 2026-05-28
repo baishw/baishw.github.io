@@ -1,7 +1,7 @@
 {
   "name": "bingoclaw-pubskill-skill",
   "type": "function",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "技能发布工具",
   "params": {
     "type": "object",
