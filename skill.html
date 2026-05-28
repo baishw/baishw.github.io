@@ -354,14 +354,54 @@
 
         function getSkillIcon(type) {
             const icons = {
-                'function': '🔧',
-                'api': '🌐',
-                'database': '🗄️',
-                'workflow': '⚙️',
-                'tool': '🛠️',
-                'default': '⚡'
+                // 通用工具类
+                'function': '🔧',      // 通用函数
+                'utility': '🛠️',       // 实用工具
+                
+                // API集成类
+                'api': '🌐',           // 通用API接口
+                'webhook': '🔗',       // Webhook回调
+                'web_service': '🌍',   // Web服务
+                
+                // 数据库与数据类
+                'database': '🗄️',      // 数据库操作
+                'search': '🔍',        // 搜索服务
+                'knowledge': '📚',     // 知识库
+                'data_analysis': '📊', // 数据分析
+                
+                // 工作流与自动化类
+                'workflow': '⚙️',      // 工作流编排
+                'automation': '🤖',    // 自动化任务
+                'scheduler': '⏰',     // 定时调度
+                
+                // AI/机器学习类
+                'ai': '🧠',            // AI模型调用
+                'llm': '💬',           // 大语言模型
+                'embedding': '📈',     // 向量嵌入
+                'vision': '👁️',        // 视觉识别
+                'speech': '🎤',        // 语音处理
+                
+                // 系统与基础设施类
+                'system': '⚡',         // 系统工具
+                'file': '📁',          // 文件操作
+                'shell': '💻',         // 命令行执行
+                'network': '🌐',       // 网络工具
+                
+                // 业务领域类
+                'crm': '👥',           // 客户关系管理
+                'erp': '🏢',           // 企业资源规划
+                'finance': '💰',       // 财务相关
+                'marketing': '📣',     // 营销工具
+                'hr': '👤',            // 人力资源
+                'supply_chain': '📦',  // 供应链管理
+                
+                // 通信类
+                'email': '📧',         // 邮件服务
+                'sms': '📱',           // 短信服务
+                'chat': '💬',          // 即时通讯
+                'notification': '🔔'   // 通知服务
             };
-            return icons[type] || icons['default'];
+            return icons[type] || '⚡';
         }
 
         function getBaseUrl() {
