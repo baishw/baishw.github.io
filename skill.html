@@ -431,18 +431,8 @@
             document.getElementById('download-btn').href = downloadUrl;
             document.getElementById('download-btn').download = filename;
 
-            const installCmd = data.installCommand || `# 下载技能包
-wget ${downloadUrl}
-
-# 解压安装（需要 unzip）
-unzip ${filename} -d skill-package
-cd skill-package
-
-# 安装依赖
-pip install requests pyyaml
-
-# 开始使用
-python scripts/main.py --help`;
+            const installCmd = `📋 复制技能包下载链接
+📤 将下载链接发送给BingoClaw`;
             document.getElementById('install-code').textContent = installCmd;
 
             if (data.name) {
