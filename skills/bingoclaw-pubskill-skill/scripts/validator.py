@@ -15,8 +15,63 @@ class SkillValidator:
     
     def __init__(self):
         """初始化验证器"""
-        # 有效的技能类型
-        self.valid_types = ['function', 'api', 'database', 'workflow']
+        # 有效的技能类型（根据 cxus_API.md 更新）
+        # 【通用工具类】
+        # 【API集成类】
+        # 【数据库与数据类】
+        # 【工作流与自动化类】
+        # 【AI/机器学习类】
+        # 【系统与基础设施类】
+        # 【业务领域类】
+        # 【通信类】
+        self.valid_types = [
+            # 通用工具类
+            'function',      # 通用函数 - 基础代码函数
+            'utility',       # 实用工具 - 常用工具函数
+            
+            # API集成类
+            'api',           # 通用API接口 - 标准RESTful API
+            'webhook',       # Webhook回调 - 事件驱动回调
+            'web_service',   # Web服务 - 其他Web服务
+            
+            # 数据库与数据类
+            'database',      # 数据库操作 - SQL数据库
+            'search',        # 搜索服务 - 全文搜索
+            'knowledge',     # 知识库 - 知识检索
+            'data_analysis', # 数据分析 - 数据处理分析
+            
+            # 工作流与自动化类
+            'workflow',      # 工作流编排 - 流程编排
+            'automation',    # 自动化任务 - 自动化执行
+            'scheduler',     # 定时调度 - 定时任务
+            
+            # AI/机器学习类
+            'ai',            # AI模型调用 - 通用AI服务
+            'llm',           # 大语言模型 - 文本生成模型
+            'embedding',     # 向量嵌入 - 文本向量化
+            'vision',        # 视觉识别 - 图像分析
+            'speech',        # 语音处理 - 语音识别合成
+            
+            # 系统与基础设施类
+            'system',        # 系统工具 - 系统级操作
+            'file',          # 文件操作 - 文件读写
+            'shell',         # 命令行执行 - 终端命令
+            'network',       # 网络工具 - 网络操作
+            
+            # 业务领域类
+            'crm',           # 客户关系管理 - 客户管理
+            'erp',           # 企业资源规划 - 企业管理
+            'finance',       # 财务相关 - 财务处理
+            'marketing',     # 营销工具 - 营销自动化
+            'hr',            # 人力资源 - 人事管理
+            'supply_chain',  # 供应链管理 - 供应链
+            
+            # 通信类
+            'email',         # 邮件服务 - 发送邮件
+            'sms',           # 短信服务 - 发送短信
+            'chat',          # 即时通讯 - 聊天消息
+            'notification'   # 通知服务 - 推送通知
+        ]
         
         # 有效的风险等级
         self.valid_risk_levels = ['low', 'medium', 'high', 'critical']
