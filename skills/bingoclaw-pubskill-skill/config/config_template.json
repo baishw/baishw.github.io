@@ -1,0 +1,11 @@
+{
+  "api_url": "https://api.skillhub.example.com",
+  "github": {
+    "owner": "baishw",
+    "repo": "baishw.github.io",
+    "branch": "main"
+  },
+  "skill_path": "skills",
+  "auto_verify": true,
+  "auto_backup": true
+}
