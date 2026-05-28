@@ -90,16 +90,56 @@
 
             <!-- 技能操作 -->
             <div class="section" id="install">
-                <h2>📦 安装指南</h2>
-                <div class="download-button-container" style="text-align: center; margin-bottom: 20px;">
-                    <a href="download.html" class="download-btn" style="display: inline-flex; align-items: center; gap: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 15px; transition: transform 0.3s, box-shadow 0.3s;">
-                        <span style="font-size: 18px;">⬇️</span>
-                        <span>下载技能包</span>
-                    </a>
+                <h2>📦 下载技能</h2>
+                
+                <!-- 下载区域 -->
+                <div class="download-section">
+                    <div class="download-card">
+                        <div class="download-header">
+                            <span class="download-icon">💾</span>
+                            <div class="download-info">
+                                <h3>技能安装包</h3>
+                                <p>skill-sharer.skill (Zip archive)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 复制链接区域 -->
+                        <div class="copy-url-section">
+                            <div class="url-box">
+                                <input type="text" id="download-url" readonly value="https://baishw.github.io/skills/bingoclaw-pubskill-skill-1.2.0/skill-sharer.skill">
+                                <button class="copy-btn" onclick="copyDownloadUrl()">
+                                    <span>📋</span>
+                                    <span>复制链接</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 下载按钮 -->
+                        <div class="download-buttons">
+                            <a href="skill-sharer.skill" download class="btn btn-primary download-btn-main">
+                                <span>⬇️</span>
+                                <span>直接下载</span>
+                            </a>
+                            <a href="download.html" class="btn btn-secondary">
+                                <span>📄</span>
+                                <span>详细页面</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
+                
+                <!-- Toast 提示 -->
+                <div class="toast" id="toast">链接已复制到剪贴板！</div>
+                
                 <div class="install-guide">
                     <h3>安装方式</h3>
-                    <pre id="install-command">pip install skill-package-name</pre>
+                    <pre id="install-command"># 下载技能包
+wget https://baishw.github.io/skills/bingoclaw-pubskill-skill-1.2.0/skill-sharer.skill
+
+# 解压安装
+unzip skill-sharer.skill -d bingoclaw-pubskill-skill
+cd bingoclaw-pubskill-skill
+pip install requests pyyaml</pre>
                     <h3>使用示例</h3>
                     <pre id="usage-example"># 使用示例代码
 result = skill_name(param1="value")
